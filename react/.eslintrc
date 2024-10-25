@@ -1,0 +1,49 @@
+{
+	"extends": [
+		"vtex-react/io",
+		"eslint:recommended",
+		"plugin:react/recommended",
+		"plugin:react-hooks/recommended",
+		"plugin:jsx-a11y/recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:prettier/recommended"
+	],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaVersion": 2020,
+		"sourceType": "module",
+		"ecmaFeatures": {
+			"jsx": true
+		}
+	},
+	"env": {
+		"browser": true,
+		"node": true,
+		"es6": true,
+		"jest": true
+	},
+	"plugins": ["react", "react-hooks", "jsx-a11y", "@typescript-eslint", "prettier"],
+	"rules": {
+		"no-console": "warn",
+		"prettier/prettier": "error",
+		"react/prop-types": "off",
+		"@typescript-eslint/explicit-module-boundary-types": "off",
+		"jsx-a11y/anchor-is-valid": "off",
+		"@typescript-eslint/explicit-function-return-type": "error",
+		"@typescript-eslint/no-explicit-any": "error",
+		"no-shadow": "off",
+		"@typescript-eslint/no-shadow": ["error", { "ignoreTypeValueShadow": true }],
+		"no-fallthrough": "off",
+		"padding-line-between-statements": [
+			"error",
+			{ "blankLine": "always", "prev": "*", "next": "switch" },
+			{ "blankLine": "always", "prev": "switch", "next": "*" },
+			{ "blankLine": "never", "prev": "case", "next": "case" }
+		]
+	},
+	"settings": {
+		"react": {
+			"version": "^16.12.0"
+		}
+	}
+}

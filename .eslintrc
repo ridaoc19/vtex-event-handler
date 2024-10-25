@@ -1,0 +1,4 @@
+{
+	"extends": ["prettier", "vtex"],
+	"root": true
+}
