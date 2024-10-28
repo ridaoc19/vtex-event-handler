@@ -13,7 +13,7 @@ const execCommand = (command, cwd) => {
 		execSync(command, { cwd, stdio: 'inherit' });
 	} catch (error) {
 		process.stderr.write(`Error ejecutando comando: ${command}\n`);
-		fs.unlinkSync(lockFile); // Eliminar el lock file si ocurre un error
+		fs.unlinkSync(lockFile);
 		process.exit(1);
 	}
 };

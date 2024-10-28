@@ -9,7 +9,7 @@ import Modal from './components/Modal';
 const Accordion = React.lazy(() => import('./components/Accordion'));
 
 export type ModalData = Array<MapMessage[KeyMessage.modalData]['data']>;
-const ElektraTaggeo = (): JSX.Element => {
+const Taggeo = (): JSX.Element => {
 	const { query } = useRuntime();
 	const [modalData, setModalData] = useState<ModalData>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,4 +66,4 @@ const ElektraTaggeo = (): JSX.Element => {
 	);
 };
 
-export default ElektraTaggeo;
+export default Taggeo;

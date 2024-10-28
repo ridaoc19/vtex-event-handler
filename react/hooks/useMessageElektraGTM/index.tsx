@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { ModalData } from '../../ElektraTaggeo';
+import { ModalData } from '../../Taggeo';
 import { QUERY_DEV_TAGGEO } from '../../global/const';
 import { KeyMessage, MapMessage } from '../../typings/message';
 import useSendEvent from '../useSendData';
@@ -18,8 +18,7 @@ const useMsgGTM: UseMsgGTM = () => {
 
 		switch (rawData.eventName) {
 			case KeyMessage.promoView: {
-				buildEventPayload(KeyMessage.promoView, rawData, ({data ,tool, sendEvent}) => {
-
+				buildEventPayload(KeyMessage.promoView, rawData, ({ data, tool, sendEvent }) => {
 					if (tool.storagePromoId({ ids: data.promotions.map(({ id }) => id) })) {
 						sendEvent(KeyEventsMessage.view_promotion, {
 							ecommerce: { items: help.itemPromotion(data) },
