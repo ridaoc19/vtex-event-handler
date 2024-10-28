@@ -12,9 +12,10 @@ interface ModalProps {
 	isOpen: boolean;
 	onClose: () => void;
 	children: ReactNode;
+	onClean: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }): ReactPortal | null => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, onClean }): ReactPortal | null => {
 	const style = useCssHandles([
 		'modal',
 		'modal-content',
@@ -107,7 +108,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }): ReactPortal
 						className={`${style['modal-content__header--button-clear']} ${style['modal-content__header--button']}`}
 						onClick={(): void => {
 							sessionStorage.removeItem('backupDataLayer');
-							// setStateContext(initialStateContext);
+							onClean();
 						}}
 					>
 						{Svg({ type: SvgType.Clean })}

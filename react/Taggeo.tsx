@@ -14,7 +14,6 @@ const Taggeo = (): JSX.Element => {
 	const [modalData, setModalData] = useState<ModalData>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const { eventMsgGTM } = useMessageElektraGTM();
-	false && console.log(isModalOpen, modalData, 'tiene');
 
 	const handleClickEvent = useCallback((event: MouseEvent): void => {
 		console.warn(event);
@@ -52,6 +51,7 @@ const Taggeo = (): JSX.Element => {
 			{isModalOpen ? (
 				<Modal
 					isOpen
+					onClean={(): void => setModalData([])}
 					onClose={(): void => {
 						sessionStorage.removeItem(QUERY_DEV_TAGGEO);
 						setIsModalOpen(false);
