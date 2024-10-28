@@ -4,9 +4,9 @@ const path = require('path');
 const fs = require('fs');
 
 const config = {
-	path: path.join(__dirname, './react/hooks/useClickElektraGTM/type.ts'),
+	path: path.join(__dirname, './react/typings/message.ts'),
 	tsconfig: path.join(__dirname, './react/tsconfig.json'),
-	type: 'TotalEvents',
+	type: 'TotalMapEvents',
 	expose: 'none',
 };
 

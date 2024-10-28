@@ -38,8 +38,9 @@ try {
 
 	process.stdout.write('Creando esquemas de TypeScript a JSON...\n');
 	// eslint-disable-next-line global-require
-	// const schema = require('./schema'); // Importar el script de esquema después de instalar los módulos
-	// schema();
+	const schema = require('./schema');
+
+	schema();
 } finally {
 	fs.unlinkSync(lockFile);
 	process.stdout.write('Proceso de instalación y creación de esquemas completado con éxito.\n');

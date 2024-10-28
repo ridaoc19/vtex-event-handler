@@ -20,7 +20,7 @@ const Accordion = ({ modalData }: { modalData: Array<MapMessage[KeyMessage.modal
 
 	return (
 		<div className={style['event-inspector']}>
-			{[generateJSON.definitions.TotalEvents.properties].map((item, ind) => {
+			{[generateJSON.definitions.TotalMapEvents.properties].map((item, ind) => {
 				return <JsonEditor key={ind} jsonSchema={item} />;
 			})}
 			{newData.map(({ page_type, events }, index) => (

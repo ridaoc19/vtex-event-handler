@@ -17,7 +17,7 @@ const JsonEditor: React.FC<{ jsonData?: MapMessage[KeyMessage.modalData]['data']
 		const { 'gtm.uniqueEventId': uniqueEventId, ...cleanedJsonData } = jsonData;
 		title = uniqueEventId;
 		data = cleanedJsonData;
-		schema = generateJSON.definitions.TotalEvents.properties[jsonData.event];
+		schema = generateJSON.definitions.TotalMapEvents.properties[jsonData.event];
 	}
 	const ajv = new Ajv({ allErrors: true, verbose: true });
 	return (
