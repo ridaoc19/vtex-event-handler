@@ -1,5 +1,5 @@
 import { MapEventsClick } from '../hooks/useClickElektraGTM/type';
-import { MapEventsMessage } from '../hooks/useMessageElektraGTM/help/type';
+import { MapEventsMessage } from '../hooks/useMessageElektraGTM/helper/type';
 
 // eslint-disable-next-line no-restricted-syntax
 export enum KeyMessage {
@@ -21,7 +21,7 @@ export enum KeyMessage {
 	search = 'vtex:search',
 	emptySearchView = 'vtex:emptySearchView',
 	// addToCart = 'vtex:addToCart',
-	modalData = 'vtex:modalJsonData',
+	modalData = 'vtex:modalData',
 }
 
 // eslint-disable-next-line no-restricted-syntax
@@ -38,7 +38,7 @@ export enum RouteId {
 export type MapMessage = {
 	[KeyMessage.modalData]: {
 		event: KeyMessage.modalData;
-		data: TotalMapEvents[keyof TotalMapEvents];
+		data: TotalMapEvents[keyof TotalMapEvents] & { 'gtm.uniqueEventId': number };
 	};
 	[KeyMessage.promoView]: {
 		currency: string;

@@ -1,0 +1,8 @@
+.events {
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+	row-gap: 0.5rem;
+	column-gap: 0.3rem;
+	justify-content: space-between;
+}

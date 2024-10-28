@@ -1,58 +1,49 @@
-import { useCallback } from 'react';
 import { usePixel } from 'vtex.pixel-manager';
 
 import { MapMessage, TotalMapEvents } from '../../typings/message';
-import { KeyEventsMessage } from '../useMessageElektraGTM/help/type';
-import type { KeyEventsClick } from '../useClickElektraGTM/type';
+import ElementToolkit from '../../utils/DomToolbox';
+import { ToolBox } from '../../utils/Toolbox';
 
-export type SendEventDataLayer = <T extends KeyEventsClick | KeyEventsMessage>(
-	event: T
-) => {
-	payload: (payload: Omit<TotalMapEvents[T], 'event' | 'page_type'>) => void;
-};
-
-export type BuildEventPayload = <T extends keyof MapMessage, E extends KeyEventsClick | KeyEventsMessage>(
+// Tipo para definir el envío de eventos
+export type SendEvent = <T extends keyof TotalMapEvents>(
+	event: T,
+	payload: Omit<TotalMapEvents[T], 'event' | 'page_type'>
+) => void;
+// Tipo principal para la función `buildEventPayload`
+export type BuildEventPayload = <T extends keyof MapMessage>(
 	keyMessage: T,
-	dataMessage: MapMessage[T],
-	callback: (
-		newDataMessage: MapMessage[T]
-	) => { event: E; payload: Omit<TotalMapEvents[E], 'event' | 'page_type'> }
+	rawData: MapMessage[T],
+	callback: (data: {
+		data: MapMessage[T];
+		dom: typeof ElementToolkit;
+		tool: typeof ToolBox;
+		sendEvent: SendEvent;
+	}) => Promise<void> | void
 ) => void;
 
+// Tipo para el hook personalizado 'useSendEvent'
 export type UseSendEvent = () => {
 	buildEventPayload: BuildEventPayload;
 };
 
 const useSendEvent: UseSendEvent = () => {
 	const { push } = usePixel();
+	const sendEvent: SendEvent = (event, payload) => {
+		const pageType = sessionStorage.getItem('locationEvent') ?? '';
+		const data = {
+			event,
+			page_type: pageType,
+			...payload,
+		};
+		window.dataLayer.push(data);
+		push({ event: 'modalData', data });
+	};
 
-	const sendEventDataLayer = useCallback<SendEventDataLayer>(
-		event => ({
-			payload: (payload): void => {
-				const pageType = sessionStorage.getItem('locationEvent') ?? '';
-
-				const data = {
-					page_type: pageType,
-					...payload,
-					event,
-				};
-
-				window.dataLayer.push(data);
-				push({ event: 'updateDataContext', data });
-			},
-		}),
-		[push]
-	);
-
-	const buildEventPayload = useCallback<BuildEventPayload>(
-		(keyMessage, dataMessage, callback) => {
-			if (keyMessage) {
-				const { event, payload } = callback(dataMessage);
-				sendEventDataLayer(event).payload(payload);
-			}
-		},
-		[sendEventDataLayer]
-	);
+	const buildEventPayload: BuildEventPayload = (keyMessage, rawData, callback) => {
+		if (keyMessage) {
+			callback({ data: rawData, dom: ElementToolkit, tool: ToolBox, sendEvent });
+		}
+	};
 
 	return { buildEventPayload };
 };

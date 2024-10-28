@@ -1,0 +1,18 @@
+.event-inspector {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding: 1rem 1rem 1rem 1.5rem;
+}
+
+.event-inspector .accordion-type:nth-child(odd) {
+	background-color: #f7f7f7;
+	color: #333333;
+	transition: background-color 0.3s ease;
+}
+
+.event-inspector .accordion-type:nth-child(even) {
+	background-color: #e0e0e0;
+	color: #333333;
+	transition: background-color 0.3s ease;
+}

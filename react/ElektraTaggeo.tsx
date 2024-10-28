@@ -1,18 +1,20 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { useRuntime } from 'vtex.render-runtime';
 
 import useMessageElektraGTM from './hooks/useMessageElektraGTM';
 import { QUERY_DEV_TAGGEO } from './global/const';
 import { KeyMessage, MapMessage } from './typings/message';
+import Modal from './components/Modal';
+
+const Accordion = React.lazy(() => import('./components/Accordion'));
 
 export type ModalData = Array<MapMessage[KeyMessage.modalData]['data']>;
-
-const ElektraTaggeo = (props: { active: boolean }): JSX.Element => {
+const ElektraTaggeo = (): JSX.Element => {
 	const { query } = useRuntime();
 	const [modalData, setModalData] = useState<ModalData>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const { eventMsgGTM } = useMessageElektraGTM(isModalOpen);
-	console.log(props, modalData, 'tiene');
+	const { eventMsgGTM } = useMessageElektraGTM();
+	false && console.log(isModalOpen, modalData, 'tiene');
 
 	const handleClickEvent = useCallback((event: MouseEvent): void => {
 		console.warn(event);
@@ -20,8 +22,10 @@ const ElektraTaggeo = (props: { active: boolean }): JSX.Element => {
 	}, []);
 
 	const handleMessageEvent = useCallback(async (event: MessageEvent): Promise<void> => {
-		const totalEvents = await eventMsgGTM({ event });
-		if (totalEvents && totalEvents.length > 0) setModalData(totalEvents);
+		if (event?.data?.eventName) {
+			const totalEvents = await eventMsgGTM({ rawData: event.data });
+			if (totalEvents && totalEvents.length > 0) setModalData(totalEvents);
+		}
 	}, []);
 
 	useEffect(() => {
@@ -43,19 +47,23 @@ const ElektraTaggeo = (props: { active: boolean }): JSX.Element => {
 		};
 	}, [handleClickEvent, handleMessageEvent]);
 
-	return <div>ElektraTaggeo</div>;
-};
-
-ElektraTaggeo.schema = {
-	title: 'Cualquier otra cosa',
-	type: 'object',
-	properties: {
-		active: {
-			title: '¿Visualizar taggeo?',
-			type: 'boolean',
-			default: false,
-		},
-	},
+	return (
+		<>
+			{isModalOpen ? (
+				<Modal
+					isOpen
+					onClose={(): void => {
+						sessionStorage.removeItem(QUERY_DEV_TAGGEO);
+						setIsModalOpen(false);
+					}}
+				>
+					<Suspense fallback={<div>Cargando schemas...</div>}>
+						<Accordion modalData={modalData} />
+					</Suspense>
+				</Modal>
+			) : null}
+		</>
+	);
 };
 
 export default ElektraTaggeo;

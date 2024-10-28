@@ -1,0 +1,25 @@
+.accordion-event__button {
+	background: none;
+	border: none;
+	text-align: left;
+	width: 100%;
+	cursor: pointer;
+	padding: 0.5rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+
+.accordion-event__button:focus {
+	background-color: #b2f2bb;
+}
+
+.accordion-event__icon {
+	font-size: 1.2rem;
+}
+
+.accordion-event__content {
+	padding: 0.5rem 1rem;
+}
