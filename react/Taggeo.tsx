@@ -1,23 +1,24 @@
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { useRuntime } from 'vtex.render-runtime';
 
-import useMessageElektraGTM from './hooks/useMessageElektraGTM';
+import useMessageElektraGTM from './hooks/useEventMsgGTM';
 import { QUERY_DEV_TAGGEO } from './global/const';
 import { KeyMessage, MapMessage } from './typings/message';
 import Modal from './components/Modal';
+import useClickGTM from './hooks/useClickGTM';
 
 const Accordion = React.lazy(() => import('./components/Accordion'));
 
 export type ModalData = Array<MapMessage[KeyMessage.modalData]['data']>;
 const Taggeo = (): JSX.Element => {
-	const { query } = useRuntime();
 	const [modalData, setModalData] = useState<ModalData>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const { eventMsgGTM } = useMessageElektraGTM();
+	const { eventClickGTM } = useClickGTM();
+	const { query } = useRuntime();
 
 	const handleClickEvent = useCallback((event: MouseEvent): void => {
-		console.warn(event);
-		// eventClickElektraGTM({ event });
+		eventClickGTM({ event });
 	}, []);
 
 	const handleMessageEvent = useCallback(async (event: MessageEvent): Promise<void> => {

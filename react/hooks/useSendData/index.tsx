@@ -4,12 +4,10 @@ import { MapMessage, TotalMapEvents } from '../../typings/message';
 import ElementToolkit from '../../utils/DomToolbox';
 import { ToolBox } from '../../utils/Toolbox';
 
-// Tipo para definir el envío de eventos
 export type SendEvent = <T extends keyof TotalMapEvents>(
 	event: T,
 	payload: Omit<TotalMapEvents[T], 'event' | 'page_type'>
 ) => void;
-// Tipo principal para la función `buildEventPayload`
 export type BuildEventPayload = <T extends keyof MapMessage>(
 	keyMessage: T,
 	rawData: MapMessage[T],
@@ -21,7 +19,6 @@ export type BuildEventPayload = <T extends keyof MapMessage>(
 	}) => Promise<void> | void
 ) => void;
 
-// Tipo para el hook personalizado 'useSendEvent'
 export type UseSendEvent = () => {
 	buildEventPayload: BuildEventPayload;
 };

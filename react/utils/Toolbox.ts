@@ -50,7 +50,7 @@ export class ToolBox {
 	/**
 	 * Normaliza una cadena de texto eliminando acentos, convirtiendo a minúsculas y eliminando espacios adicionales.
 	 */
-	public static normalizeString(input: string | undefined | null): string {
+	public static cleanStr(input: string | undefined | null): string {
 		if (!input) return '';
 		return input
 			.toString()

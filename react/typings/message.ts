@@ -1,5 +1,5 @@
-import { MapEventsClick } from '../hooks/useClickElektraGTM/type';
-import { MapEventsMessage } from '../hooks/useMessageElektraGTM/helper/type';
+import { MapEventsClick } from '../hooks/useClickGTM/type';
+import { MapEventsMessage } from '../hooks/useEventMsgGTM/helper/type';
 
 // eslint-disable-next-line no-restricted-syntax
 export enum KeyMessage {
@@ -22,6 +22,7 @@ export enum KeyMessage {
 	emptySearchView = 'vtex:emptySearchView',
 	// addToCart = 'vtex:addToCart',
 	modalData = 'vtex:modalData',
+	click = 'vtex:clic',
 }
 
 // eslint-disable-next-line no-restricted-syntax
@@ -36,6 +37,9 @@ export enum RouteId {
 }
 
 export type MapMessage = {
+	[KeyMessage.click]: {
+		event: KeyMessage.click;
+	};
 	[KeyMessage.modalData]: {
 		event: KeyMessage.modalData;
 		data: TotalMapEvents[keyof TotalMapEvents] & { 'gtm.uniqueEventId': number };
