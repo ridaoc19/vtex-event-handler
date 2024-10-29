@@ -23,6 +23,7 @@ export const groupByPageTypeAndEvent = (events: Array<MapMessage[KeyMessage.moda
 			if (currentGroup) {
 				groupedEvents.push(currentGroup);
 			}
+
 			currentGroup = {
 				page_type: event.page_type,
 				events: [],
@@ -30,6 +31,7 @@ export const groupByPageTypeAndEvent = (events: Array<MapMessage[KeyMessage.moda
 		}
 
 		let eventGroup = currentGroup.events.find(e => e.event === event.event);
+
 		if (!eventGroup) {
 			eventGroup = {
 				event: event.event,

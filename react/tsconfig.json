@@ -1,7 +1,7 @@
 {
-  "extends": "@vtex/tsconfig",
-  "compilerOptions": {
-    "noEmitOnError": false,
+	"extends": "@vtex/tsconfig",
+	"compilerOptions": {
+		"noEmitOnError": false,
 		"lib": ["dom"],
 		"module": "esnext",
 		"moduleResolution": "node",
@@ -20,6 +20,6 @@
 		"noUnusedParameters": true,
 		"resolveJsonModule": true,
 		"esModuleInterop": true
-  },
-  "include": ["./typings/*.d.ts", "./**/*.tsx", "./**/*.ts"]
+	},
+	"include": ["./typings/*.d.ts", "./**/*.tsx", "./**/*.ts"]
 }

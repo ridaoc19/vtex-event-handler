@@ -17,20 +17,28 @@ const Taggeo = (): JSX.Element => {
 	const { eventClickGTM } = useClickGTM();
 	const { query } = useRuntime();
 
-	const handleClickEvent = useCallback((event: MouseEvent): void => {
-		eventClickGTM({ event });
-	}, []);
+	const handleClickEvent = useCallback(
+		(event: MouseEvent): void => {
+			eventClickGTM({ event });
+		},
+		[eventClickGTM]
+	);
 
-	const handleMessageEvent = useCallback(async (event: MessageEvent): Promise<void> => {
-		if (event?.data?.eventName) {
-			const totalEvents = await eventMsgGTM({ rawData: event.data });
-			if (totalEvents && totalEvents.length > 0) setModalData(totalEvents);
-		}
-	}, []);
+	const handleMessageEvent = useCallback(
+		async (event: MessageEvent): Promise<void> => {
+			if (event?.data?.eventName) {
+				const totalEvents = await eventMsgGTM({ rawData: event.data });
+
+				if (totalEvents && totalEvents.length > 0) setModalData(totalEvents);
+			}
+		},
+		[eventMsgGTM]
+	);
 
 	useEffect(() => {
 		const isDevTaggeo = query && Object.keys(query).includes(QUERY_DEV_TAGGEO);
 		const isStoredTaggeo = sessionStorage[QUERY_DEV_TAGGEO];
+
 		if (isDevTaggeo || isStoredTaggeo) {
 			if (!isStoredTaggeo) sessionStorage.setItem(QUERY_DEV_TAGGEO, 'true');
 			setIsModalOpen(true);

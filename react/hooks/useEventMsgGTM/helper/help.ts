@@ -1,4 +1,4 @@
-import { KeyMessage, MapMessage } from '../../../typings/message';
+import { KeyMessage, MapMessage, RouteId } from '../../../typings/message';
 import { ItemPromotion } from './type';
 
 export default {
@@ -18,5 +18,32 @@ export default {
 			quantity: 1,
 			index: +position,
 		}));
+	},
+	locationEvent({ routeId, pageTitle }: Pick<MapMessage[KeyMessage.pageView], 'pageTitle' | 'routeId'>): void {
+		switch (routeId) {
+			case RouteId.Home:
+				sessionStorage.locationEvent = 'home';
+				break;
+
+			case RouteId.Product:
+				sessionStorage.locationEvent = 'pdp';
+				break;
+
+			case RouteId.Search:
+
+			case RouteId.SearchBrand:
+
+			case RouteId.SearchDepartment:
+
+			case RouteId.SearchCategory:
+
+			case RouteId.SearchSubcategory:
+				sessionStorage.locationEvent = 'plp';
+				break;
+
+			default:
+				sessionStorage.locationEvent = pageTitle;
+				break;
+		}
 	},
 };

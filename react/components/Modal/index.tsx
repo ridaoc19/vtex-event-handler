@@ -1,5 +1,5 @@
 import type { ReactNode, ReactPortal } from 'react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useDevice } from 'vtex.device-detector';
 
@@ -29,6 +29,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, onClean }): Re
 		'modal-resize__line',
 		'modal-resize__button',
 	] as const);
+
 	const { isMobile } = useDevice();
 	const [modalRoot, setModalRoot] = useState<HTMLDivElement | null>(null);
 	const [modalWidth, setModalWidth] = useState(420);
@@ -38,6 +39,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, onClean }): Re
 
 	useEffect(() => {
 		const tenPercentOfWindowWidth = window.innerWidth * 0.05;
+
 		if (modalWidth >= window.innerWidth - tenPercentOfWindowWidth) {
 			setIsResizing(false);
 			setModalWidth(window.innerWidth - tenPercentOfWindowWidth);
@@ -49,6 +51,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, onClean }): Re
 
 	useEffect(() => {
 		const modalDiv = document.createElement('div');
+
 		modalDiv.setAttribute('id', 'modal-root');
 		document.body.appendChild(modalDiv);
 		setModalRoot(modalDiv);
@@ -64,18 +67,22 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, onClean }): Re
 		}
 	};
 
-	const handleMouseMove = (e: MouseEvent): void => {
-		if (isResizing) {
-			const newWidth = window.innerWidth - e.clientX;
-			setModalWidth(newWidth);
-		}
-	};
+	const handleMouseMove = useCallback(
+		(e: MouseEvent): void => {
+			if (isResizing) {
+				const newWidth = window.innerWidth - e.clientX;
 
-	const handleMouseUp = (): void => {
+				setModalWidth(newWidth);
+			}
+		},
+		[isResizing]
+	);
+
+	const handleMouseUp = useCallback((): void => {
 		if (isResizing) {
 			setIsResizing(false);
 		}
-	};
+	}, [isResizing]);
 
 	useEffect(() => {
 		if (isResizing) {
@@ -90,7 +97,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, onClean }): Re
 			window.removeEventListener('mousemove', handleMouseMove);
 			window.removeEventListener('mouseup', handleMouseUp);
 		};
-	}, [isResizing]);
+	}, [handleMouseMove, handleMouseUp, isResizing]);
 
 	if (!isOpen || !modalRoot) {
 		return null;

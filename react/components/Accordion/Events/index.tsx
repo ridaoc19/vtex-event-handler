@@ -9,6 +9,7 @@ const JsonEditor = React.lazy(() => import('../../common/JsonEditor'));
 type EventsType = (data: { items: EventGroup['items'] }) => JSX.Element;
 const Events: EventsType = ({ items }): JSX.Element => {
 	const style = useCssHandles(['events'] as const);
+
 	return (
 		<div className={style.events}>
 			{items.map((jsonData, indexJson) => (

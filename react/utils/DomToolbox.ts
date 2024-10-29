@@ -1,3 +1,11 @@
+interface GetClickBreadcrumbReturn {
+	breadcrumb: string;
+	breadcrumb_lv1: string;
+	breadcrumb_lv2: string;
+	breadcrumb_lv3: string;
+	breadcrumb_lv4: string;
+}
+
 export default class ElementToolkit {
 	/**
 	 * Selecciona todos los elementos que coinciden con el selector CSS especificado.
@@ -124,10 +132,72 @@ export default class ElementToolkit {
 			XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
 			null
 		);
+
 		for (let i = 0; i < nodesSnapshot.snapshotLength; i++) {
 			const node = nodesSnapshot.snapshotItem(i) as Element | null;
+
 			if (node) result.push(node);
 		}
+
 		return result;
+	}
+
+	/**
+	 * Obtiene la ruta de navegación (breadcrumb) de la página actual.
+	 * @returns Un objeto que contiene la URL actual y los niveles de la ruta de navegación.
+	 */
+	public static getClickBreadcrumb(): GetClickBreadcrumbReturn {
+		const classNamePLP = '.vtex-breadcrumb-1-x-link';
+		const classNameCLP = '.elektra-elektra-components-0-x-breadCrumbItem';
+		const breadCrumbClP = document.querySelectorAll(classNameCLP);
+		const breadcrumbPLP = document.querySelectorAll(classNamePLP);
+
+		const breadcrumbs: GetClickBreadcrumbReturn = {
+			breadcrumb: window.location.href || '',
+			breadcrumb_lv1: '',
+			breadcrumb_lv2: '',
+			breadcrumb_lv3: '',
+			breadcrumb_lv4: '',
+		};
+
+		if (breadcrumbPLP.length > 0) {
+			breadcrumbPLP.forEach((_element, index) => {
+				const breadcrumbLevel = `breadcrumb_lv${index + 1}` as keyof GetClickBreadcrumbReturn;
+				const value = document.querySelector(`${classNamePLP}--${index + 1}`)?.innerHTML ?? '';
+
+				if (index < 4 && value) {
+					breadcrumbs[breadcrumbLevel] = value;
+				}
+			});
+			breadcrumbs.breadcrumb_lv4 =
+				document.querySelector('.vtex-breadcrumb-1-x-term')?.innerHTML ?? '';
+		}
+
+		if (breadCrumbClP.length) {
+			breadCrumbClP.forEach((element, index) => {
+				const breadcrumbLevel = `breadcrumb_lv${index}` as keyof GetClickBreadcrumbReturn;
+				const value = element.innerHTML || '';
+
+				if (index < 4 && index > 0 && value) {
+					breadcrumbs[breadcrumbLevel] = value;
+				}
+			});
+		}
+
+		return breadcrumbs;
+	}
+
+	/**
+	 * Obtiene el código postal ingresado en el campo correspondiente.
+	 * @returns El código postal como número, o null si no se ha ingresado.
+	 */
+	public static getClickPostalCode(): number | null {
+		const cp = document.querySelector('.inputPopUpPostalCode') as HTMLInputElement;
+
+		if (cp?.value) {
+			return Number.isNaN(Number(cp.value)) ? 0 : Number(cp.value);
+		}
+
+		return null;
 	}
 }

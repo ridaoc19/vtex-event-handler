@@ -57,6 +57,7 @@ function Svg({ type }: { type: SvgType }): JSX.Element | null {
 					/>
 				</svg>
 			);
+
 		case SvgType.Minimize:
 			return (
 				<svg
@@ -89,6 +90,7 @@ function Svg({ type }: { type: SvgType }): JSX.Element | null {
 					/>
 				</svg>
 			);
+
 		case SvgType.Maximize:
 			return (
 				<svg
@@ -121,6 +123,7 @@ function Svg({ type }: { type: SvgType }): JSX.Element | null {
 					/>
 				</svg>
 			);
+
 		case SvgType.Update:
 			return (
 				<svg
@@ -139,6 +142,7 @@ function Svg({ type }: { type: SvgType }): JSX.Element | null {
 					/>
 				</svg>
 			);
+
 		case SvgType.Close:
 			return (
 				<svg
@@ -171,6 +175,7 @@ function Svg({ type }: { type: SvgType }): JSX.Element | null {
 					/>
 				</svg>
 			);
+
 		default:
 			return null;
 	}

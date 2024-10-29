@@ -13,13 +13,17 @@ const JsonEditor: React.FC<{ jsonData?: MapMessage[KeyMessage.modalData]['data']
 	let title = 0;
 	let data = {};
 	let schema = {};
+
 	if (jsonData) {
 		const { 'gtm.uniqueEventId': uniqueEventId, ...cleanedJsonData } = jsonData;
+
 		title = uniqueEventId;
 		data = cleanedJsonData;
 		schema = generateJSON.definitions.TotalMapEvents.properties[jsonData.event];
 	}
+
 	const ajv = new Ajv({ allErrors: true, verbose: true });
+
 	return (
 		<div className='json-editor-container'>
 			<p>uniqueEventId: {title}</p>

@@ -33,13 +33,13 @@
 		"@typescript-eslint/no-explicit-any": "error",
 		"no-shadow": "off",
 		"@typescript-eslint/no-shadow": ["error", { "ignoreTypeValueShadow": true }],
-		"no-fallthrough": "off",
-		"padding-line-between-statements": [
-			"error",
-			{ "blankLine": "always", "prev": "*", "next": "switch" },
-			{ "blankLine": "always", "prev": "switch", "next": "*" },
-			{ "blankLine": "never", "prev": "case", "next": "case" }
-		]
+		"no-fallthrough": "off"
+		// "padding-line-between-statements": [
+		// 	"error",
+		// 	{ "blankLine": "always", "prev": "*", "next": "switch" },
+		// 	{ "blankLine": "always", "prev": "switch", "next": "*" },
+		// 	{ "blankLine": "never", "prev": "case", "next": "case" }
+		// ]
 	},
 	"settings": {
 		"react": {
