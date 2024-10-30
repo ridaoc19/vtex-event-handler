@@ -16,14 +16,16 @@ const useRequest = (): UseRequestResult => {
 
 	const fetchProduct = async (): Promise<void> => {
 		try {
-			const productData = await getProduct({
-				variables: {
-					type: 'sku',
-					id: 1300309658,
-				},
-			});
+			false && getProduct();
+			// await fetchProductData('skuId', '1300309658');
+			// const productData = await getProduct({
+			// 	variables: {
+			// 		type: 'sku',
+			// 		id: 1300309658,
+			// 	},
+			// });
 
-			console.warn('tiene datos:', productData);
+			console.warn('tiene datos:');
 		} catch (errors) {
 			console.error('Error al obtener el producto:', errors);
 		}
