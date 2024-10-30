@@ -1,0 +1,25 @@
+query GetProduct($id: ID!, $type: String!) {
+	product(identifier: { field: $type, value: $id }) @context(provider: "vtex.search-graphql") {
+		productId
+		categories
+		brand
+		specificationGroups {
+			specifications {
+				name
+				values
+			}
+		}
+		items {
+			itemId
+			nameComplete
+			name
+			sellers {
+				sellerName
+				commertialOffer {
+					Price
+					ListPrice
+				}
+			}
+		}
+	}
+}

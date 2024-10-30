@@ -1,3 +1,4 @@
+import useRequest from '../useRequest';
 import useSendEvent from '../useSendData';
 import { KeyEventsClick } from './type';
 
@@ -9,6 +10,7 @@ type UseClickGTM = () => {
 
 const useClickGTM: UseClickGTM = () => {
 	const { buildEventClick } = useSendEvent();
+	const { fetchProduct } = useRequest();
 
 	const eventClickGTM: EventClickGTM = ({ event }) => {
 		const target = event.target as HTMLElement;
@@ -20,6 +22,7 @@ const useClickGTM: UseClickGTM = () => {
 				const text = tool.cleanStr(dom.innerText(container));
 
 				if (text === tool.cleanStr('Viajes')) {
+					fetchProduct();
 					sendEvent(KeyEventsClick.click_viajes, {});
 				} else if (text === tool.cleanStr('Ubica tu tienda')) {
 					sendEvent(KeyEventsClick.click_ubica_tienda, {});
