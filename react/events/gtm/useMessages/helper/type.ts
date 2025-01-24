@@ -155,4 +155,5 @@ export interface ItemsProduct {
 	semanalidad: number;
 	vendor: string;
 	modelo: string;
+	oferta_relampago: boolean;
 }

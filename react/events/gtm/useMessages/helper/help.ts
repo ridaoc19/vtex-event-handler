@@ -1,4 +1,4 @@
-import { KeyMessage, MapMessage, RouteId } from '../../../typings/message';
+import { KeyMessage, MapMessage, RouteId } from '../../../../typings/message';
 import { ItemPromotion } from './type';
 
 export default {

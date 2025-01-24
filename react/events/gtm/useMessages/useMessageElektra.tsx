@@ -1,21 +1,31 @@
 import { useCallback } from 'react';
 
-import { ModalData } from '../../Taggeo';
-import { PROMOTION_VIEW_IDS, QUERY_DEV_TAGGEO, TEXT_SEARCH } from '../../global/const';
-import { KeyMessage, MapMessage } from '../../typings/message';
-import useSendEvent from '../useSendData';
+import { ModalData } from '../../../Taggeo';
+import { PROMOTION_VIEW_IDS, QUERY_DEV_TAGGEO, TEXT_SEARCH } from '../../../utils/const';
+import { KeyMessage, MapMessage } from '../../../typings/message';
+import useSendEvent from '../../../hooks/useSendData';
 import { KeyEventsMessage } from './helper/type';
 
-type EventMsgGTM = (data: { rawData: MessageEvent['data'] }) => Promise<ModalData | null>;
-type UseMsgGTM = () => { eventMsgGTM: EventMsgGTM };
+type EventMessageElektra = (data: { rawData: MessageEvent['data'] }) => Promise<ModalData | null>;
+type UseMessageElektra = () => { eventMessageElektra: EventMessageElektra };
 
-const useMsgGTM: UseMsgGTM = () => {
+const useMessageElektra: UseMessageElektra = () => {
 	const { buildEventMessage } = useSendEvent();
 
-	const eventMsgGTM: EventMsgGTM = useCallback(async ({ rawData }) => {
+	const eventMessageElektra: EventMessageElektra = useCallback(async ({ rawData }) => {
 		let dataModal: ModalData | null = null;
 
 		switch (rawData.eventName) {
+			// ? Limpia TEXT_SEARCH evento del search
+			case KeyMessage.pageInfo: {
+				buildEventMessage(KeyMessage.pageInfo, rawData, ({ data }) => {
+					if (!['emptySearchView', 'internalSiteSearchView'].includes(data.eventType))
+						sessionStorage.removeItem(TEXT_SEARCH);
+				});
+				break;
+			}
+
+			// ! virtual_page
 			case KeyMessage.pageView: {
 				buildEventMessage(KeyMessage.pageView, rawData, ({ data, sendEvent, help }) => {
 					sessionStorage.removeItem(PROMOTION_VIEW_IDS);
@@ -25,14 +35,7 @@ const useMsgGTM: UseMsgGTM = () => {
 				break;
 			}
 
-			case KeyMessage.pageInfo: {
-				buildEventMessage(KeyMessage.pageInfo, rawData, ({ data }) => {
-					if (!['emptySearchView', 'internalSiteSearchView'].includes(data.eventType))
-						sessionStorage.removeItem(TEXT_SEARCH);
-				});
-				break;
-			}
-
+			// ! view_promotion
 			case KeyMessage.promoView: {
 				buildEventMessage(KeyMessage.promoView, rawData, ({ data, tool, sendEvent, help }) => {
 					if (tool.storagePromoId({ ids: data.promotions.map(({ id }) => id) })) {
@@ -44,6 +47,7 @@ const useMsgGTM: UseMsgGTM = () => {
 				break;
 			}
 
+			// ? Para el modal
 			case KeyMessage.modalData: {
 				if (sessionStorage[QUERY_DEV_TAGGEO]) {
 					const { data } = rawData as MapMessage[KeyMessage.modalData];
@@ -55,7 +59,6 @@ const useMsgGTM: UseMsgGTM = () => {
 					dataModal = updatedData;
 					sessionStorage.setItem('backupDataLayer', JSON.stringify(updatedData));
 				}
-
 				break;
 			}
 
@@ -68,7 +71,7 @@ const useMsgGTM: UseMsgGTM = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	return { eventMsgGTM };
+	return { eventMessageElektra };
 };
 
-export default useMsgGTM;
+export default useMessageElektra;

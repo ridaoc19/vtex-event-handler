@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "vtex.device-detector": "0.x",
-    "vtex.store-graphql": "2.x",
     "vtex.pixel-manager": "1.x",
     "vtex.css-handles": "0.x"
   },

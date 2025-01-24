@@ -3,8 +3,9 @@ import { usePixel } from 'vtex.pixel-manager';
 import { MapMessage, TotalMapEvents } from '../../typings/message';
 import ElementToolkit from '../../utils/DomToolbox';
 import { ToolBox } from '../../utils/Toolbox';
-import HelpMessage from '../useEventMsgGTM/helper/help';
-import HelpClick from '../useClickGTM/helper/help';
+import HelpMessage from '../../events/gtm/useMessages/helper/help';
+import HelpClick from '../../events/gtm/useClick/helper/help';
+import { GetItem } from '../../services/GetItem';
 
 export type SendEvent = <T extends keyof TotalMapEvents>(
 	event: T,
@@ -18,6 +19,7 @@ export type BuildEventMessage = <T extends keyof MapMessage>(
 		data: MapMessage[T];
 		dom: typeof ElementToolkit;
 		tool: typeof ToolBox;
+		getItem: typeof GetItem;
 		help: typeof HelpMessage;
 		sendEvent: SendEvent;
 	}) => Promise<void> | void
@@ -29,6 +31,7 @@ export type BuildEventClick = (
 		target: HTMLElement;
 		dom: typeof ElementToolkit;
 		tool: typeof ToolBox;
+		getItem: typeof GetItem;
 		help: typeof HelpClick;
 		sendEvent: SendEvent;
 	}) => Promise<void> | void
@@ -55,7 +58,14 @@ const useSendEvent: UseSendEvent = () => {
 
 	const buildEventMessage: BuildEventMessage = (keyMessage, rawData, callback) => {
 		if (keyMessage) {
-			callback({ data: rawData, dom: ElementToolkit, tool: ToolBox, help: HelpMessage, sendEvent });
+			callback({
+				data: rawData,
+				dom: ElementToolkit,
+				tool: ToolBox,
+				getItem: GetItem,
+				help: HelpMessage,
+				sendEvent,
+			});
 		}
 	};
 
@@ -65,6 +75,7 @@ const useSendEvent: UseSendEvent = () => {
 				target: event.target as HTMLElement,
 				dom: ElementToolkit,
 				tool: ToolBox,
+				getItem: GetItem,
 				help: HelpClick,
 				sendEvent,
 			});

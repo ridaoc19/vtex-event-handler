@@ -1,7 +1,9 @@
-import { ToolBox } from '../../utils/Toolbox';
-import { ItemsProduct } from '../../events/gtm/useMessages/helper/type';
-import { TotalMapEvents } from '../../typings/message';
-import generateJSON from '../../../__generated__/schema.json';
+import { ItemsProduct } from '../events/gtm/useMessages/helper/type';
+import generateJSON from '../../__generated__/schema.json';
+import { TotalMapEvents } from '../typings/message';
+import { ToolBox } from '../utils/Toolbox';
+
+const apiBaseUrl = '/api/catalog_system/pub/products/search';
 
 export interface GetProduct {
 	typeGet: 'skuId' | 'productId';
@@ -11,8 +13,6 @@ export interface GetProduct {
 		index: number;
 	}>;
 }
-
-const apiBaseUrl = '/api/catalog_system/pub/products/search';
 
 export interface FetchProductReturn {
 	product: FetchProductType.FetchProduct;
@@ -28,7 +28,7 @@ export interface FetchProductParams {
 
 export type FetchProduct = (data: FetchProductParams) => Promise<FetchProductReturn | null>;
 
-export class Data {
+export class GetItem {
 	private readonly toolBox = ToolBox;
 
 	constructor() {

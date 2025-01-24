@@ -1,18 +1,18 @@
-import useRequest from '../useRequest';
-import useSendEvent from '../useSendData';
+import useRequest from '../../../hooks/useRequest';
+import useSendEvent from '../../../hooks/useSendData';
 import { KeyEventsClick } from './type';
 
-type EventClickGTM = (data: { event: MouseEvent }) => void;
+type EventClickElektra = (data: { event: MouseEvent }) => void;
 
-type UseClickGTM = () => {
-	eventClickGTM: EventClickGTM;
+type UseClickElektra = () => {
+	eventClickElektra: EventClickElektra;
 };
 
-const useClickGTM: UseClickGTM = () => {
+const useClickElektra: UseClickElektra = () => {
 	const { buildEventClick } = useSendEvent();
 	const { fetchProduct } = useRequest();
 
-	const eventClickGTM: EventClickGTM = ({ event }) => {
+	const eventClickElektra: EventClickElektra = ({ event }) => {
 		const target = event.target as HTMLElement;
 
 		buildEventClick(event, ({ dom, tool, sendEvent }) => {
@@ -31,7 +31,7 @@ const useClickGTM: UseClickGTM = () => {
 		});
 	};
 
-	return { eventClickGTM };
+	return { eventClickElektra };
 };
 
-export default useClickGTM;
+export default useClickElektra;
