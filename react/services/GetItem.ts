@@ -1,4 +1,4 @@
-import { ItemsProduct } from '../events/gtm/useMessages/helper/type';
+import { ItemsProduct } from '../events/gtm/useMessages/useMessageElektra/type';
 import generateJSON from '../../__generated__/schema.json';
 import { TotalMapEvents } from '../typings/message';
 import { ToolBox } from '../utils/Toolbox';

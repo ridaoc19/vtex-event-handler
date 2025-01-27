@@ -1,5 +1,10 @@
 {
 	"elektra-taggeo": {
 		"component": "Taggeo"
+	},
+	"taggeo-wrapped-select-item": {
+		"component": "TaggeoWrappedSelectItem",
+		"allowed": "*",
+		"composition": "children"
 	}
 }

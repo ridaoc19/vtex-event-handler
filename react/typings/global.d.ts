@@ -1,6 +1,8 @@
 interface Window {
 	dataLayer: unknown[];
 	isItalika: boolean;
+	isElektra: boolean;
+	storeName: string;
 }
 
 declare module 'jsoneditor-react';

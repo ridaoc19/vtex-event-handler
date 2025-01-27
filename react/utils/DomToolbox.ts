@@ -1,3 +1,5 @@
+import { ItemsProduct } from '../events/gtm/useMessages/useMessageElektra/type';
+
 interface GetClickBreadcrumbReturn {
 	breadcrumb: string;
 	breadcrumb_lv1: string;
@@ -21,8 +23,8 @@ export default class ElementToolkit {
 	 * @param selector - Selector CSS del elemento a seleccionar.
 	 * @returns El primer elemento que coincide con el selector, o null si no se encuentra.
 	 */
-	public static bySelector(selector: string): Element | null {
-		return document.querySelector(selector);
+	public static bySelector(selector: string, element: Element = document.documentElement): HTMLElement | null {
+		return element.querySelector(selector);
 	}
 
 	/**
@@ -199,5 +201,34 @@ export default class ElementToolkit {
 		}
 
 		return null;
+	}
+
+	public static dataShelf(
+		product: Array<{ skuId: string; index?: number }>
+	): { section: string; items: ItemsProduct[] } {
+		const sectionHome = this.bySelector('.vtex-rich-text-0-x-strong--title-surprise')?.innerHTML;
+		const citeSection = this.byId(`taggeo-${product[0].skuId}`);
+		const sectionPDP = citeSection
+			?.closest('.vtex-shelf-1-x-relatedProducts--otroscompradores')
+			?.querySelector('.vtex-shelf-1-x-title')?.innerHTML;
+
+		const cards: ItemsProduct[] = product
+			.map(({ skuId, index = 1 }) => {
+				const cite = this.byId(`taggeo-${skuId}`);
+				if (!cite || !cite?.dataset?.all) return null;
+				const citeAll = JSON.parse(cite?.dataset?.all) || {};
+				delete citeAll.sellerId;
+				return {
+					...citeAll,
+					index,
+				};
+			})
+			.filter(Boolean);
+
+		console.log(sectionHome ?? sectionPDP ?? '', cards, 'tiene principal');
+		return {
+			section: sectionHome ?? sectionPDP ?? '',
+			items: cards,
+		};
 	}
 }

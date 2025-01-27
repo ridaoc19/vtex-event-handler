@@ -1,18 +1,22 @@
 import useClickElektra from './useClickElektra';
 import useClickItalika from './useClickItalika';
 
-type EventClickGTM = (data: { event: MouseEvent }) => void;
+type EventClick = (data: { event: MouseEvent }) => void;
 
-type UseClickGTM = () => {
-	eventClickElektra: EventClickGTM;
-	eventClickItalika: EventClickGTM;
+type UseClick = () => {
+	eventClick: EventClick;
 };
 
-const useClickGTM: UseClickGTM = () => {
+const useClickGTM: UseClick = () => {
 	const { eventClickElektra } = useClickElektra();
 	const { eventClickItalika } = useClickItalika();
 
-	return { eventClickElektra, eventClickItalika };
+	const eventClick: EventClick = ({ event }) => {
+		eventClickElektra({ event });
+		eventClickItalika({ event });
+	};
+
+	return { eventClick };
 };
 
 export default useClickGTM;

@@ -1,44 +1,37 @@
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { useRuntime } from 'vtex.render-runtime';
 
-import useMessage from './events/gtm/useMessages';
-import { QUERY_DEV_TAGGEO } from './utils/const';
-import { KeyMessage, MapMessage } from './typings/message';
 import Modal from './components/Modal';
 import useClick from './events/gtm/useClick';
-import useRequest from './hooks/useRequest';
+import useMessage from './events/gtm/useMessages';
+import { KeyMessage, MapMessage } from './typings/message';
+import { QUERY_DEV_TAGGEO } from './utils/const';
+// import { ToolBox } from './utils/Toolbox';
 
 const Accordion = React.lazy(() => import('./components/Accordion'));
 
 export type ModalData = Array<MapMessage[KeyMessage.modalData]['data']>;
 const Taggeo = (): JSX.Element => {
 	const { query } = useRuntime();
-	const { eventClickElektra, eventClickItalika } = useClick();
-	const { eventMessageElektra, eventMessageItalika } = useMessage();
+	const { eventClick } = useClick();
+	const { eventMessage } = useMessage();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [modalData, setModalData] = useState<ModalData>([]);
-	const { fetchProduct } = useRequest();
 
 	const handleClickEvent = useCallback(
 		(event: MouseEvent): void => {
-			eventClickElektra({ event });
-			eventClickItalika({ event });
+			eventClick({ event });
 		},
-		[eventClickElektra, eventClickItalika]
+		[eventClick]
 	);
 
 	const handleMessageEvent = useCallback(
 		async (event: MessageEvent): Promise<void> => {
 			if (!event?.data?.eventName) return;
-
-			const totalEventsElektra = (await eventMessageElektra({ rawData: event.data })) ?? [];
-			const totalEventsItalika = (await eventMessageItalika({ rawData: event.data })) ?? [];
-
-			const totalEvents = [...totalEventsElektra, ...totalEventsItalika];
-
-			if (totalEvents && totalEvents.length > 0) setModalData(totalEvents);
+			const totalEventsMessage = (await eventMessage({ rawData: event.data })) ?? [];
+			if (totalEventsMessage && totalEventsMessage.length > 0) setModalData(totalEventsMessage);
 		},
-		[eventMessageElektra, eventMessageItalika]
+		[eventMessage]
 	);
 
 	useEffect(() => {
@@ -63,13 +56,13 @@ const Taggeo = (): JSX.Element => {
 
 	return (
 		<>
-			<button
+			{/* <button
 				onClick={(): void => {
-					fetchProduct();
+					console.log(ToolBox.isElektra(), 'tiene');
 				}}
 			>
-				button
-			</button>
+				click
+			</button> */}
 			{isModalOpen ? (
 				<Modal
 					isOpen

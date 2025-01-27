@@ -1,5 +1,5 @@
-import { KeyEventsClick } from '../events/gtm/useClick/type';
-import { KeyEventsMessage } from '../events/gtm/useMessages/helper/type';
+import { KeyEventsClick } from '../events/gtm/useClick/useClickElektra/type';
+import { KeyEventsMessage } from '../events/gtm/useMessages/useMessageElektra/type';
 import { KeyMessage, MapMessage } from '../typings/message';
 
 export interface EventGroup {

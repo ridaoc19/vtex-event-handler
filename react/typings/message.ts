@@ -1,5 +1,5 @@
-import { MapEventsClick } from '../events/gtm/useClick/type';
-import { MapEventsMessage } from '../events/gtm/useMessages/helper/type';
+import { MapEventsClick } from '../events/gtm/useClick/useClickElektra/type';
+import { MapEventsMessage } from '../events/gtm/useMessages/useMessageElektra/type';
 
 // eslint-disable-next-line no-restricted-syntax
 export enum KeyMessage {

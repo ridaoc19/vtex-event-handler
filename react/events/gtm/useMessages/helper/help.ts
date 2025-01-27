@@ -1,5 +1,5 @@
 import { KeyMessage, MapMessage, RouteId } from '../../../../typings/message';
-import { ItemPromotion } from './type';
+import { ItemPromotion } from '../useMessageElektra/type';
 
 export default {
 	itemPromotion({ promotions }: Pick<MapMessage[KeyMessage.promoView], 'promotions'>): ItemPromotion[] {
@@ -30,13 +30,9 @@ export default {
 				break;
 
 			case RouteId.Search:
-
 			case RouteId.SearchBrand:
-
 			case RouteId.SearchDepartment:
-
 			case RouteId.SearchCategory:
-
 			case RouteId.SearchSubcategory:
 				sessionStorage.locationEvent = 'plp';
 				break;

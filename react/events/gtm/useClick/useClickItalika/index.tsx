@@ -6,7 +6,7 @@ type UseClickItalika = () => {
 
 const useClickItalika: UseClickItalika = () => {
 	const eventClickItalika: EventClickItalika = ({ event }) => {
-		console.log(event);
+		false && console.log(event);
 	};
 
 	return { eventClickItalika };

@@ -3,6 +3,7 @@ const tsj = require('ts-json-schema-generator');
 const path = require('path');
 const fs = require('fs');
 
+// Configuración
 const config = {
 	path: path.join(__dirname, './react/typings/message.ts'),
 	tsconfig: path.join(__dirname, './react/tsconfig.json'),
@@ -10,37 +11,60 @@ const config = {
 	expose: 'none',
 };
 
-const schemaPath = path.join(__dirname, './__generated__/schema.json');
+const generatedDir = path.join(__dirname, './__generated__'); // Ruta de la carpeta __generated__
+const schemaPath = path.join(generatedDir, 'schema.json');
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function removeExistingSchema() {
-	if (fs.existsSync(schemaPath)) {
-		fs.unlinkSync(schemaPath);
-		process.stdout.write('Esquema anterior eliminado.\n');
+const log = {
+	success: message => console.warn(`\x1b[32m%s\x1b[0m`, message), // Verde
+	info: message => console.warn(`\x1b[34m%s\x1b[0m`, message), // Azul
+	warning: message => console.warn(`\x1b[33m%s\x1b[0m`, message), // Amarillo
+	error: message => console.warn(`\x1b[31m%s\x1b[0m`, message), // Rojo
+};
+
+// Verificar y crear la carpeta __generated__ si no existe
+function ensureGeneratedDirExists() {
+	if (!fs.existsSync(generatedDir)) {
+		fs.mkdirSync(generatedDir);
+		log.success('Carpeta __generated__ creada.');
+	} else {
+		log.info('Carpeta __generated__ ya existe.');
 	}
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+// Eliminar el archivo de esquema existente
+function removeExistingSchema() {
+	if (fs.existsSync(schemaPath)) {
+		fs.unlinkSync(schemaPath);
+		log.warning('Esquema anterior eliminado.');
+	} else {
+		log.info('No se encontró un esquema previo para eliminar.');
+	}
+}
+
+// Escribir el esquema generado en el archivo
 function writeSchema(schema) {
 	const schemaString = JSON.stringify(schema, null, 2);
 
 	fs.writeFileSync(schemaPath, schemaString);
-	process.stdout.write('Nuevo esquema generado y guardado.\n');
+	log.success('Nuevo esquema generado y guardado en __generated__.');
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+// Generar el esquema utilizando ts-json-schema-generator
 function generateSchema() {
+	log.info('Generando el esquema...');
+
 	return tsj.createGenerator(config).createSchema(config.type);
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+// Función principal del proceso
 function main() {
-	process.stdout.write('Iniciando proceso de generación del esquema...\n');
-	removeExistingSchema();
-	const output = generateSchema();
+	log.info('Iniciando proceso de generación del esquema...');
+	ensureGeneratedDirExists(); // Asegurar que la carpeta exista
+	removeExistingSchema(); // Eliminar el esquema existente, si aplica
+	const output = generateSchema(); // Generar el nuevo esquema
 
-	writeSchema(output);
-	process.stdout.write('Proceso de generación de esquema finalizado.\n');
+	writeSchema(output); // Guardar el esquema generado
+	log.success('Proceso de generación de esquema finalizado.');
 }
 
 module.exports = main;

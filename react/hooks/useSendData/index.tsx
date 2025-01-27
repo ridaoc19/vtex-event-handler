@@ -1,3 +1,4 @@
+import React from 'react';
 import { usePixel } from 'vtex.pixel-manager';
 
 import { MapMessage, TotalMapEvents } from '../../typings/message';
@@ -13,6 +14,7 @@ export type SendEvent = <T extends keyof TotalMapEvents>(
 ) => void;
 
 export type BuildEventMessage = <T extends keyof MapMessage>(
+	pageType: 'elektra' | 'italika' | 'dual',
 	keyMessage: T,
 	rawData: MapMessage[T],
 	callback: (data: {
@@ -26,7 +28,8 @@ export type BuildEventMessage = <T extends keyof MapMessage>(
 ) => void;
 
 export type BuildEventClick = (
-	event: MouseEvent,
+	pageType: 'elektra' | 'italika' | 'dual',
+	event: React.MouseEvent<MouseEvent> | React.MouseEvent<HTMLDivElement> | MouseEvent,
 	callback: (data: {
 		target: HTMLElement;
 		dom: typeof ElementToolkit;
@@ -44,6 +47,7 @@ export type UseSendEvent = () => {
 
 const useSendEvent: UseSendEvent = () => {
 	const { push } = usePixel();
+
 	const sendEvent: SendEvent = (event, payload) => {
 		const pageType = sessionStorage.getItem('locationEvent') ?? '';
 		const data = {
@@ -56,8 +60,10 @@ const useSendEvent: UseSendEvent = () => {
 		push({ event: 'modalData', data });
 	};
 
-	const buildEventMessage: BuildEventMessage = (keyMessage, rawData, callback) => {
-		if (keyMessage) {
+	const buildEventMessage: BuildEventMessage = (pageType, keyMessage, rawData, callback) => {
+		const newPageType =
+			pageType === 'elektra' ? window.isElektra : pageType === 'italika' ? window.isItalika : true;
+		if (keyMessage && newPageType) {
 			callback({
 				data: rawData,
 				dom: ElementToolkit,
@@ -69,10 +75,13 @@ const useSendEvent: UseSendEvent = () => {
 		}
 	};
 
-	const buildEventClick: BuildEventClick = (event, callback) => {
-		if (event) {
+	const buildEventClick: BuildEventClick = (pageType, event, callback) => {
+		const newPageType =
+			pageType === 'elektra' ? window.isElektra : pageType === 'italika' ? window.isItalika : true;
+		if (event && newPageType) {
 			callback({
 				target: event.target as HTMLElement,
+				// target: event instanceof MouseEvent ? (event.target as HTMLElement) : event,
 				dom: ElementToolkit,
 				tool: ToolBox,
 				getItem: GetItem,
