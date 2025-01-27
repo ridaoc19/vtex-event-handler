@@ -15,10 +15,10 @@ const generatedDir = path.join(__dirname, './__generated__'); // Ruta de la carp
 const schemaPath = path.join(generatedDir, 'schema.json');
 
 const log = {
-	success: message => console.warn(`\x1b[32m%s\x1b[0m`, message), // Verde
-	info: message => console.warn(`\x1b[34m%s\x1b[0m`, message), // Azul
-	warning: message => console.warn(`\x1b[33m%s\x1b[0m`, message), // Amarillo
-	error: message => console.warn(`\x1b[31m%s\x1b[0m`, message), // Rojo
+	success: message => console.warn(`\x1b[32m%s\x1b[0m`, message),
+	info: message => console.warn(`\x1b[34m%s\x1b[0m`, message),
+	warning: message => console.warn(`\x1b[33m%s\x1b[0m`, message),
+	error: message => console.warn(`\x1b[31m%s\x1b[0m`, message),
 };
 
 // Verificar y crear la carpeta __generated__ si no existe

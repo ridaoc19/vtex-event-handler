@@ -8,10 +8,10 @@ const nodeModulesReact = `${reactDir}/node_modules`;
 const nodeModulesMain = path.resolve(__dirname, 'node_modules');
 
 const log = {
-	success: message => console.warn(`\x1b[42m\x1b[30m%s\x1b[0m`, message), // Fondo verde con texto negro
-	info: message => console.warn(`\x1b[44m\x1b[37m%s\x1b[0m`, message), // Fondo azul con texto blanco
-	warning: message => console.warn(`\x1b[43m\x1b[30m%s\x1b[0m`, message), // Fondo amarillo con texto negro
-	error: message => console.warn(`\x1b[41m\x1b[37m%s\x1b[0m`, message), // Fondo rojo con texto blanco
+	success: message => console.warn(`\x1b[42m\x1b[30m%s\x1b[0m`, message),
+	info: message => console.warn(`\x1b[44m\x1b[37m%s\x1b[0m`, message),
+	warning: message => console.warn(`\x1b[43m\x1b[30m%s\x1b[0m`, message),
+	error: message => console.warn(`\x1b[41m\x1b[37m%s\x1b[0m`, message),
 };
 
 // Ejecutar comandos

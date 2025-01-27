@@ -21,7 +21,7 @@ export type BuildEventMessage = <T extends keyof MapMessage>(
 		data: MapMessage[T];
 		dom: typeof ElementToolkit;
 		tool: typeof ToolBox;
-		getItem: typeof GetItem;
+		getItem: typeof GetItem.getProductData;
 		help: typeof HelpMessage;
 		sendEvent: SendEvent;
 	}) => Promise<void> | void
@@ -34,7 +34,7 @@ export type BuildEventClick = (
 		target: HTMLElement;
 		dom: typeof ElementToolkit;
 		tool: typeof ToolBox;
-		getItem: typeof GetItem;
+		getItem: typeof GetItem.getProductData;
 		help: typeof HelpClick;
 		sendEvent: SendEvent;
 	}) => Promise<void> | void
@@ -60,6 +60,7 @@ const useSendEvent: UseSendEvent = () => {
 		push({ event: 'modalData', data });
 	};
 
+	// eslint-disable-next-line max-params
 	const buildEventMessage: BuildEventMessage = (pageType, keyMessage, rawData, callback) => {
 		const newPageType =
 			pageType === 'elektra' ? window.isElektra : pageType === 'italika' ? window.isItalika : true;
@@ -68,7 +69,7 @@ const useSendEvent: UseSendEvent = () => {
 				data: rawData,
 				dom: ElementToolkit,
 				tool: ToolBox,
-				getItem: GetItem,
+				getItem: GetItem.getProductData,
 				help: HelpMessage,
 				sendEvent,
 			});
@@ -81,10 +82,9 @@ const useSendEvent: UseSendEvent = () => {
 		if (event && newPageType) {
 			callback({
 				target: event.target as HTMLElement,
-				// target: event instanceof MouseEvent ? (event.target as HTMLElement) : event,
 				dom: ElementToolkit,
 				tool: ToolBox,
-				getItem: GetItem,
+				getItem: GetItem.getProductData,
 				help: HelpClick,
 				sendEvent,
 			});

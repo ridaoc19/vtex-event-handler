@@ -32,6 +32,21 @@ const useMessageElektra: UseMessageElektra = () => {
 				break;
 			}
 
+			// ! view_item
+			case KeyMessage.productView: {
+				build('dual', KeyMessage.productView, rawData, async ({ data, getItem, sendEvent }) => {
+					const items = await getItem({
+						eventName: KeyEventsMessage.view_item,
+						typeGet: 'skuId',
+						dataItem: [{ id: data.product.items[0].itemId }],
+					});
+					if (items.length > 0) {
+						sendEvent(KeyEventsMessage.view_item, { ecommerce: { items } });
+					}
+				});
+				break;
+			}
+
 			default: {
 				break;
 			}
