@@ -43,7 +43,6 @@ const useMessage: UseMessage = () => {
 			case KeyMessage.modalData: {
 				if (sessionStorage[QUERY_DEV_TAGGEO]) {
 					const { data } = rawData as MapMessage[KeyMessage.modalData];
-					console.log(data, 'tiene 3');
 
 					const backupDL = sessionStorage.getItem('backupDataLayer');
 					const dataSend: ModalData = backupDL ? JSON.parse(backupDL) : [];

@@ -6,7 +6,6 @@ import useClick from './events/gtm/useClick';
 import useMessage from './events/gtm/useMessages';
 import { KeyMessage, MapMessage } from './typings/message';
 import { QUERY_DEV_TAGGEO } from './utils/const';
-// import { ToolBox } from './utils/Toolbox';
 
 const Accordion = React.lazy(() => import('./components/Accordion'));
 
@@ -56,13 +55,6 @@ const Taggeo = (): JSX.Element => {
 
 	return (
 		<>
-			{/* <button
-				onClick={(): void => {
-					console.log(ToolBox.isElektra(), 'tiene');
-				}}
-			>
-				click
-			</button> */}
 			{isModalOpen ? (
 				<Modal
 					isOpen

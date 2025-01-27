@@ -29,17 +29,9 @@ export interface FetchProductParams {
 export type FetchProduct = (data: FetchProductParams) => Promise<FetchProductReturn | null>;
 
 export class GetItem {
-	private readonly toolBox = ToolBox;
-
-	constructor() {
-		this.toolBox = ToolBox;
-	}
-
-	private fetchProduct: FetchProduct = async ({ typeGet, id }) => {
-		const queryParam = typeGet === 'skuId' ? 'skuId' : 'productId';
-
+	public static fetchProduct: FetchProduct = async ({ typeGet, id }) => {
 		try {
-			const response = await fetch(`${apiBaseUrl}?fq=${queryParam}:${id}`);
+			const response = await fetch(`${apiBaseUrl}?fq=${typeGet}:${id}`);
 
 			if (!response.ok) {
 				console.error(`Error en la respuesta de la API: ${response.status}`);
@@ -85,7 +77,7 @@ export class GetItem {
 	/**
 	 * Transforma los datos de un producto en el formato necesario.
 	 */
-	private async transformProductData({
+	public static async transformProductData({
 		commertialOffer,
 		sellerName,
 		quantity,
@@ -104,8 +96,8 @@ export class GetItem {
 		const { itemId, nameComplete } = item;
 
 		return {
-			comparador: this.toolBox.isSelectedComparator({ productId }),
-			cotizador_prestamo: this.toolBox.isProductInCreditQuote({ productId }),
+			comparador: ToolBox.isSelectedComparator({ productId }),
+			cotizador_prestamo: ToolBox.isProductInCreditQuote({ productId }),
 			item_name: nameComplete,
 			item_id: itemId,
 			product_id: productId,
@@ -128,14 +120,14 @@ export class GetItem {
 			semanalidad: 0, //! pendiente
 			vendor: sellerName,
 			modelo: Modelo && Array.isArray(Modelo) ? Modelo[0] : '',
-			oferta_relampago: this.toolBox.SelectedFlashOffer({ productId }),
+			oferta_relampago: ToolBox.SelectedFlashOffer({ productId }),
 		};
 	}
 
 	/**
 	 * Obtiene los datos de los productos y los transforma.
 	 */
-	public async getProductData<T extends keyof TotalMapEvents>({
+	public static async getProductData<T extends keyof TotalMapEvents>({
 		typeGet,
 		dataItem,
 		eventName,
@@ -155,7 +147,7 @@ export class GetItem {
 		const transformedData: Array<ItemsProduct | null> = await Promise.all(
 			dataItem.map(async ({ id, index = 1, quantity = 1 }) => {
 				try {
-					const dataProduct = await this.fetchProduct({ typeGet, id });
+					const dataProduct = await GetItem.fetchProduct({ typeGet, id });
 
 					if (!dataProduct) {
 						console.error(`No se encontró el producto con id: ${id}`);
@@ -164,7 +156,7 @@ export class GetItem {
 
 					const { defaultSeller, item, product, commertialOffer } = dataProduct;
 
-					const data = await this.transformProductData({
+					const data = await GetItem.transformProductData({
 						commertialOffer,
 						sellerName: defaultSeller.sellerName,
 						quantity,

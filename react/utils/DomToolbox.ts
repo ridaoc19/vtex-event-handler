@@ -225,7 +225,6 @@ export default class ElementToolkit {
 			})
 			.filter(Boolean);
 
-		console.log(sectionHome ?? sectionPDP ?? '', cards, 'tiene principal');
 		return {
 			section: sectionHome ?? sectionPDP ?? '',
 			items: cards,
